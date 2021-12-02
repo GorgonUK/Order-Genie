@@ -6,7 +6,9 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
-
+#OG-Home-Hero {
+    height: 100%;
+}
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
@@ -26,8 +28,9 @@ a {
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
+html, body {
   font-size: 14px;
+  height:100%;
 }
 @media (min-width: 768px) {
   html {

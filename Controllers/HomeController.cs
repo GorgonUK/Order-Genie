@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Order_Genie.Models;
 using System;
@@ -27,11 +28,17 @@ namespace Order_Genie.Controllers
         {
             return View();
         }
+        [Authorize]
+        public IActionResult Secure()
+        {
+            return View();
+        }
+        [HttpGet("Login")]
         public IActionResult Login()
         {
             return View();
         }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
