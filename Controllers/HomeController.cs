@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Order_Genie.Models;
@@ -6,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+
 
 namespace Order_Genie.Controllers
 {
@@ -28,17 +32,57 @@ namespace Order_Genie.Controllers
         {
             return View();
         }
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+        public IActionResult Signup()
+        {
+            return View();
+        }
         [Authorize]
         public IActionResult Secure()
         {
             return View();
         }
-        [HttpGet("Login")]
-        public IActionResult Login()
+        [HttpGet("login")]
+        public IActionResult Login(string returnUrl)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-        
+        [HttpPost("login")]
+        public async Task <IActionResult> Validate(string username, string password, string returnUrl)
+        {
+            
+            if (username == "admin@ordergenie" && password == "admin")
+            {
+                //Create new instance of claim
+                var claims = new List<Claim>
+                {
+                    //Generate Key-Value Pairs
+                    new Claim("username", username),
+                    new Claim(ClaimTypes.NameIdentifier, username)
+                };
+                //User identiy with claims identity 
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                //Authenitcation Ticket
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                await HttpContext.SignInAsync(claimsPrincipal);
+                return View("Dashboard");
+
+            }
+            TempData["Error"] = "Error. Username or Password is invalid"; 
+            return View("login");
+        }
+        //Authorize attribute will validate whether the user is logged in.
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return Redirect("/");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
