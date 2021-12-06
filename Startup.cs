@@ -28,6 +28,29 @@ namespace Order_Genie
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
                     options.LoginPath = "/login";
+                    options.AccessDeniedPath = "/denied";
+
+                    //*** Expose blackbox cookie auth event - Start ***
+
+                    options.Events = new CookieAuthenticationEvents()
+                    {
+                        OnSigningIn = async context =>
+                        {
+                            await Task.CompletedTask; 
+                        },
+                        OnSignedIn = async context =>
+                        {
+                            await Task.CompletedTask;
+                        },
+                        //Fires every time cookie is authenticated
+                        OnValidatePrincipal = async context =>
+                        {
+                            await Task.CompletedTask;
+                        }
+                    };
+
+                    //*** Expose blackbox cookie auth event - End ***
+
                 });
         }
 

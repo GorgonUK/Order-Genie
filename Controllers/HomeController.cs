@@ -32,6 +32,7 @@ namespace Order_Genie.Controllers
         {
             return View();
         }
+        [Authorize]
         public IActionResult Dashboard()
         {
             return View();
@@ -40,8 +41,8 @@ namespace Order_Genie.Controllers
         {
             return View();
         }
-        [Authorize]
-        public IActionResult Secure()
+        [HttpGet("denied")]
+        public IActionResult Denied()
         {
             return View();
         }
@@ -62,14 +63,16 @@ namespace Order_Genie.Controllers
                 {
                     //Generate Key-Value Pairs
                     new Claim("username", username),
-                    new Claim(ClaimTypes.NameIdentifier, username)
+                    new Claim(ClaimTypes.NameIdentifier, username),
+                    new Claim(ClaimTypes.Name, "George"),
+                    new Claim(ClaimTypes.Role, "Admin")
                 };
                 //User identiy with claims identity 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 //Authenitcation Ticket
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await HttpContext.SignInAsync(claimsPrincipal);
-                return View("Dashboard");
+                return Redirect("Home/Dashboard");
 
             }
             TempData["Error"] = "Error. Username or Password is invalid"; 
@@ -80,6 +83,7 @@ namespace Order_Genie.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
+            
             return Redirect("/");
         }
 
