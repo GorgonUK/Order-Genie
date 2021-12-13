@@ -80,3 +80,11 @@ body {
     }
 }
 
+
+    @media screen and (max-width: 464px) {
+        .logged-user-name {
+            display: none;
+        }
+    }
+
+

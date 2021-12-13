@@ -37,24 +37,56 @@
                             aria-label="Toggle navigation">
                         <i class="fas fa-bars"></i>
                     </button>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                       <a class="navbar-brand mt-lg-0" asp-area="" asp-controller="Home" asp-action="Dashboard">
+                        <img src="~/img/logo.png"
+                             height="30"
+                             alt=""
+                             loading="lazy" />
+                    </a>  
+                    }
+                    else{
                     <a class="navbar-brand mt-lg-0" asp-area="" asp-controller="Home" asp-action="Index">
                         <img src="~/img/logo.png"
                              height="30"
                              alt=""
                              loading="lazy" />
                     </a>
+                    }
                 </div>
                 <!-- Collapsible wrapper -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Navbar brand -->
                     <!-- Left links -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        @if (User.Identity.IsAuthenticated)
+                    {
                         <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secure">Product Catalog</a>
+                        </li>
+                            <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secure">Orders</a>
+                        </li>
+                            <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secure">Stores</a>
+                        </li>
+                             <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secure">Settings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secure">Support</a>
+                            </li>
+                        }
+                        else
+                        {
+                             <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secure">Secured</a>
-                        </li>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secure">Support</a>
+                            </li>
+                        }
                     </ul>
                     <!-- Left links -->
                 </div>
@@ -64,8 +96,34 @@
                     <!-- Icon -->
                     @if (User.Identity.IsAuthenticated)
                     {
+                        <h4 class="logged-user-name" style="width: 118px;margin-top: 6px;font-size: 14px;">Welcome, @User.Identity.Name</h4>
+                        <!-- Notifications -->
+                        <a class="text-reset me-3 dropdown-toggle hidden-arrow"
+                       href="#"
+                       id="navbarDropdownMenuLink"
+                       role="button"
+                       data-mdb-toggle="dropdown"
+                       aria-expanded="false"
+                       style="margin-top: 7px;margin-right: 14px;">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="navbarDropdownMenuLink">
+                            <li>
+                                <a class="dropdown-item" href="#">Some news</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Another news</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </li>
+                        </ul>
+
+                        
                         <a asp-area="" asp-controller="Home" asp-action="Logout">
-                            <button type="button" class="btn btn-primary me-3" style="width:100px;">
+                            <button type="button" class="btn btn-primary me-3" style="width:100px;margin-right: 10px;">
                                 Logout
                             </button>
                         </a>
@@ -85,55 +143,7 @@
                     }
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <!-- Notifications -->
-                        <a class="text-reset me-3 dropdown-toggle hidden-arrow"
-                       href="#"
-                       id="navbarDropdownMenuLink"
-                       role="button"
-                       data-mdb-toggle="dropdown"
-                       aria-expanded="false"
-                       style="margin: 13px;">
-                            <i class="fas fa-bell"></i>
-                            <span class="badge rounded-pill badge-notification bg-danger">1</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end"
-                        aria-labelledby="navbarDropdownMenuLink">
-                            <li>
-                                <a class="dropdown-item" href="#">Some news</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Another news</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </li>
-                        </ul>
-
-                        <!-- Avatar -->
-                        <a class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                       href="#"
-                       id="navbarDropdownMenuLink"
-                       role="button"
-                       data-mdb-toggle="dropdown"
-                       aria-expanded="false">
-                            <img src="https://mdbootstrap.com/img/new/avatars/2.jpg"
-                             class="rounded-circle"
-                             height="25"
-                             alt=""
-                             loading="lazy" />
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end"
-                        aria-labelledby="navbarDropdownMenuLink">
-                            <li>
-                                <a class="dropdown-item" href="#">My profile</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Settings</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Logout</a>
-                            </li>
-                        </ul>
+                        
                     }
                 </div>
                 <!-- Right elements -->
