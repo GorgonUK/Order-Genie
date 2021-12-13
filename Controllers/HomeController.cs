@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Order_Genie.Data;
 using Order_Genie.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Order_Genie.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        private readonly DatabaseContext _DatabaseContext = new DatabaseContext();
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -25,6 +26,14 @@ namespace Order_Genie.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+        public IActionResult Register()
+        {
+
+            Utility.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
+
             return View();
         }
 

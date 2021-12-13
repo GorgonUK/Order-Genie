@@ -1,23 +1,34 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.Extensions.Logging;
 using Order_Genie.Models;
 
+
 namespace Order_Genie.Data
 {
-    public class ApplicationDBContext : DbContext
+    public class DatabaseContext : DbContext
     {
-public virtual DbSet<User> Users { get; set; }
-        
-        protected virtual void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DbSet<Users> Categories { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder
-                .UseMySql("server=127.0.0.1;port=3306;user=root;password=root;database=ordergenie")
-                .UseLoggerFactory(LoggerFactory.Create(b => b
-                    .AddConsole()
-                    .AddFilter(level => level >= LogLevel.Information)))
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors();
-            
+            var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "ordergenie.db" };
+            var connectionString = connectionStringBuilder.ToString();
+            var connection = new SqliteConnection(connectionString);
+
+            optionsBuilder.UseSqlite(connection);
+        }
+    }
+    public static class Utility
+    {
+        public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
     }
 }
