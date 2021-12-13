@@ -30,7 +30,7 @@ namespace Order_Genie.Controllers
         }
         public IActionResult Register()
         {
-
+            var password = "a";
             Utility.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
 
