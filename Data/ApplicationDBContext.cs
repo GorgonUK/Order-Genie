@@ -9,7 +9,8 @@ namespace Order_Genie.Data
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<Users> Categories { get; set; }
+        public DbSet<Users> Users { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
